@@ -4,9 +4,20 @@
 
   import Render from './Render.svelte'
   import Item from './Item.svelte'
+
+  import { board } from './stores'
+
+  board.set(new Array(10).fill(new Array(10).fill(' ')))
+
 </script>
 
-<Item/>
+{#each $board as row, i}
+  {#each row as item, j}
+    {#if item == 'I'}
+      <svelte:component this={Item} position={[i, 0, j]}/>
+    {/if}
+  {/each}
+{/each}
 
 <Grid
   position={[0.5, -0.5, 0.5]}
@@ -33,7 +44,9 @@
   on:create={({ ref }) => {
     ref.lookAt(0, 0, 0)
   }}>
-  <OrbitControls/>
+  <OrbitControls
+    enableDamping={true}
+  />
 </T.PerspectiveCamera>
 
 <Render/>

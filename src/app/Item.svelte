@@ -13,15 +13,23 @@
 
   let cur = 0
 
-  let pos = tweened(route[cur], {
+  let rPos = tweened(route[cur], {
     duration: 500,
     easing: quadInOut
   })
 
+  export let position = [0, 0, 0]
+
+  $: aPos = [
+    $rPos[0] + position[0],
+    $rPos[1] + position[1],
+    $rPos[2] + position[2]
+  ]
+
   onMount(() => {
     const interval = setInterval(() => {
       cur = (cur + 1) % route.length
-      pos.set(route[cur])
+      rPos.set(route[cur])
     }, 500)
 
     return () => {
@@ -30,7 +38,7 @@
   })
 </script>
 
-<T.Mesh position={$pos}>
+<T.Mesh position={aPos}>
   <T.BoxGeometry/>
   <T.MeshStandardMaterial/>
 </T.Mesh>
